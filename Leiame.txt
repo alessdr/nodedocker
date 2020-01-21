@@ -1,0 +1,147 @@
+Projeto NodeKS + Docker
+-----------------------
+
+1) Criar o projeto (no VSCode)
+
+2) Abrir o terminal (CTRL + `) e digitar o comando abaixo p/ criar o package.json
+
+	npm init -y
+
+3) Criar os arquivo abaixo, com os respectivos comandos ou via VSCode
+
+	touch index.js
+	touch Dockerfile
+
+4) Instalar o Express para a criacao do servidor web
+
+	npm install express
+
+5) Inserir o codigo abaixo no index.js
+
+	const express = require('express');
+
+	const PORT = 3000;
+	const HOST = '0.0.0.0';
+
+	const app = express();
+
+	app.get('/', (req, res) => {
+	    res.send('Hello World!');
+	});
+
+	app.listen(PORT, HOST);
+
+OBS: Para testar digitar "node inde.js", sem as aspas
+
+6) Criar o arquivo .dockerignore para definir os arquivos/pastas que nao serao copiados para o conatiner docker
+
+	touch .dockerignore
+
+7) Acrescentar no arquivo touch .dockerignore, o conteudo abaixo:
+
+	node_modules
+
+OBS: Para nao copiar a pasta node_modules para o container docker
+
+
+8) Acrescentar na sessao "scripts" do arquivo package.json, o comando que executara nossa aplicacao (start). Seguir modelo abaixo
+
+	"scripts": {
+	    "test": "echo \"Error: no test specified\" && exit 1",
+	    "start": "node inde.js"
+	  },
+
+9) Acrescentar o conteudo abaixo no arquivo Dockerfile
+
+	FROM node:alpine
+
+	WORKDIR /usr/app
+
+	COPY package*.json ./
+	RUN npm install
+
+	COPY . .
+
+	EXPOSE 3000
+
+	CMD ["npm", "start"]
+
+10) Construir o container
+
+	docker build -t exemplo/nodedocker .
+
+11) Executar a aplicacao
+
+	docker run -p 3000:3000 -d exemplo/nodedocker
+
+12) Verificar se o processo esta rodando:
+
+	docker ps
+
+13) Acessar http://localhost:3000
+
+
+
+Projeto NodeKS + Docker Compose
+-------------------------------
+
+Sera utilizado para espelhar arquivos alterados no projeto para dentro do container
+
+14) Criar o arquivo abaixo no projeto
+
+	touch docker-compose.yml
+
+15) Acrescentar ao arquivo criado anteriormente o conteudo abaixo:
+
+	version: "3"
+
+	services: 
+	    app:
+	        build: .
+	        command: npm start
+	        ports: 
+	            - "3000:3000"
+	        volumes: 
+	            - .:/usr/app
+
+16) Para auxiliar no monitoramento do nodejs, instalar a lib abaixo:
+
+	npm install nodemon
+
+17) Trocar no package.json a linha de execucao da aplicacao "start": "node index.js" pelo nova lib, como abaxio:
+
+	"start": "nodemon index.js"
+
+18) Executar o container, com o comando abaixo:
+
+	docker-compose up
+
+OBS: Cuidado para a prta ja nao estar em uso por utro container ou processo.
+
+
+COMANDOS DOCKER
+---------------
+
+a) Parar todos os processos docker
+
+	docker rm $(docker ps --all -q)
+
+b) Apagar imagem docker 
+
+	docker rmi IDENTIFICADOR_DA_IMAGEM_NOME_OU_ID
+
+c) Verificar versao do docker / docker-compose
+
+	docker -v 
+	docker-compose -v 
+
+d) Parar um container
+
+	docker stop IDENTIFICADOR_DA_IMAGEM_NOME_OU_ID
+
+e) Listar imagens disponiveis
+
+	docker images
+
+
+

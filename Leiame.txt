@@ -31,7 +31,7 @@ Projeto NodeKS + Docker
 
 	app.listen(PORT, HOST);
 
-OBS: Para testar digitar "node inde.js", sem as aspas
+OBS: Para testar digitar "node index.js", sem as aspas
 
 6) Criar o arquivo .dockerignore para definir os arquivos/pastas que nao serao copiados para o conatiner docker
 
@@ -48,7 +48,7 @@ OBS: Para nao copiar a pasta node_modules para o container docker
 
 	"scripts": {
 	    "test": "echo \"Error: no test specified\" && exit 1",
-	    "start": "node inde.js"
+	    "start": "node index.js"
 	  },
 
 9) Acrescentar o conteudo abaixo no arquivo Dockerfile
@@ -82,7 +82,7 @@ OBS: Para nao copiar a pasta node_modules para o container docker
 
 
 
-Projeto NodeKS + Docker Compose
+Projeto NodeJS + Docker Compose
 -------------------------------
 
 Sera utilizado para espelhar arquivos alterados no projeto para dentro do container
@@ -108,7 +108,7 @@ Sera utilizado para espelhar arquivos alterados no projeto para dentro do contai
 
 	npm install nodemon
 
-17) Trocar no package.json a linha de execucao da aplicacao "start": "node index.js" pelo nova lib, como abaxio:
+17) Trocar no package.json a linha de execucao da aplicacao "start": "node index.js" pelo nova lib, como abaixo:
 
 	"start": "nodemon index.js"
 
@@ -116,7 +116,7 @@ Sera utilizado para espelhar arquivos alterados no projeto para dentro do contai
 
 	docker-compose up
 
-OBS: Cuidado para a prta ja nao estar em uso por utro container ou processo.
+OBS: Cuidado para a porta ja nao estar em uso por outro container ou processo.
 
 
 COMANDOS DOCKER
